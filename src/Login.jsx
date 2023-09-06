@@ -1,27 +1,8 @@
-import { Box, Button, Checkbox, Container, FormControlLabel, Grid, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, Checkbox, Container, FormControlLabel, Grid, TextField, Typography } from '@mui/material';
 import React from 'react';
-import {createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState, useEffect } from 'react';
 import { useNavigate, json } from 'react-router-dom';
 
-const theme = createTheme({
-    palette: {
-        mode: 'dark',
-        primary: {
-          main: '#5246A6',
-        },
-        secondary: {
-          main: '#2F732D',
-        },
-        error: {
-          main: '#731D34',
-        },
-        warning: {
-          main: '#D9831A',
-        },
-      },
-    
-});
 
 function Login() {
 
@@ -33,21 +14,23 @@ function Login() {
     
     const navigate = useNavigate();
 
+
+    /*o useEffect fica analisando o elemento que esta dentro dele e atualizando, neste caso ele está verificando o login, quando ele for alterado ele fará a ação
+    que foi pré definida, neste caso, se o email e senha for verdadeiro, ele irá adicionar o email no localStorage, e limpará os campos de email e senha*/    
     useEffect( () => {
 
         if( login ) {
-            localStorage.setItem( "usurario" , JSON.stringify( { email: email } ) );
+            localStorage.setItem( "usuario" , JSON.stringify( { email: email } ) );
             setEmail( "" );
             setSenha( "" );
             navigate( "/" );
-        }
-
+        } 
     }, [ login ] );
 
     function Autenticar(evento)
     {
-        evento.preventDefault()
-        fetch( "https://api.escuelajs.co/api/v1/auth/login" , {
+        evento.preventDefault() //o preventDefault impede a página ser carregada enquanto não há o envio do formulário, então a página não será recarregada enquanto o formulário não for enviado pelo usuário
+        fetch( "http://10.139.75.32:8080/login" , {
             method: "POST",
             headers: {
                 'content-Type': 'application/json'
@@ -55,16 +38,16 @@ function Login() {
             body: JSON.stringify(
                 {
                     email: email,
-                    password: senha
+                    senha: senha
                 }
             )   
         } )
         .then( (resposta) => resposta.json() )
         .then( (json) => { 
-            if( json.statusCode === 401 ) {
-                setErro( true );
-            } else {
+            if( json.user ) {
                 setLogin( true );
+            } else {
+                setErro( true );
             }
         } )
         .catch( ( erro ) => { setErro( true ) } )
@@ -73,7 +56,6 @@ function Login() {
     }
 
   return (
-    <ThemeProvider theme={theme}>
     <Container component="section" maxWidth="xs">
         <Box 
         sx={{ 
@@ -87,15 +69,17 @@ function Login() {
         }}
         >
             <Typography component="h1" variant='h4'>Entrar</Typography>
+            { erro && ( <Alert severity="warning" sx={{ mt: 2, mb: 2 }}>Revise seus dados e tente novamente</Alert> ) }
             <Box component="form" onSubmit={Autenticar}>
                 <TextField 
                 type="email" 
                 label="Email" 
                 variant="filled" 
                 margin="normal" 
-                fullWidth 
                 value={email}
                 onChange={ (e) => setEmail( e.target.value ) }
+                fullWidth 
+                {...erro && ( "error" ) }
                 />
                 <TextField 
                 type="password" 
@@ -122,8 +106,7 @@ function Login() {
                 </Grid>
             </Box>
         </Box>
-    </Container>
-    </ThemeProvider>
+    </Container> 
   )
 }
 

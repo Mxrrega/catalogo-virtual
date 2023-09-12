@@ -30,7 +30,7 @@ function Login() {
     function Autenticar(evento)
     {
         evento.preventDefault() //o preventDefault impede a página ser carregada enquanto não há o envio do formulário, então a página não será recarregada enquanto o formulário não for enviado pelo usuário
-        fetch( "http://10.139.75.32:8080/login" , {
+        fetch( process.env.REACT_APP_BACKEND + "login" , {
             method: "POST",
             headers: {
                 'content-Type': 'application/json'

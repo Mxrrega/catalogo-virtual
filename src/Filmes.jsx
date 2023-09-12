@@ -1,17 +1,9 @@
-import { Autocomplete, Box, Button, Container, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, Container, TextField, Typography } from '@mui/material';
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 
-function Filmes() {
-
-    const categoriasfilmes = [ 
-        { label: 'Ação' }, { label: 'Aventura'}, { label: 'Cinema de arte'}, { label: 'Chanchada'}, { label: 'Comédia'}, { label: 'Comédia de ação'},
-        { label: 'Comédia de terror'}, { label: 'Comédia dramática'}, { label: 'Comédia romântica'}, { label: 'Dança'}, { label: 'Documentário'},
-        { label: 'Docuficção'}, { label: 'Drama'}, { label: 'Espionagem'}, { label: 'Faroeste'}, { label: 'Fantasia'}, { label: 'Fantasia científica'},
-        { label: 'Ficção científica'}, { label: 'Filmes com truques'}, { label: 'Filmes de guerra'}, { label: 'Mistério'}, { label: 'Musical'},
-        { label: 'Filme policial'}, { label: 'Romance'}, { label: 'Terror'}, { label: 'Thriller'}
-    ]
+function Filmes() {;
 
     const [ titulo, setTitulo ] = useState( "" );
     const [ descricao, setDescricao ] = useState( "" );
@@ -19,14 +11,14 @@ function Filmes() {
     const [ duracao, setDuracao ] = useState( "" );
     const [ categoria, setCategoria ] = useState( "" );
     const [ imagem, setImagem ] = useState( "" );
-    const [ enviar, setEnviar ] = useState( false );
+    const [ cadastro, setCadastro ] = useState( false );
     const [ erro, setErro ] = useState( false );
     
-function Enviar( evento ) {
+function Cadastrar( evento ) {
 
     evento.preventDefault();
 
-    fetch( "http://10.139.75.32:8080/filmes", {
+    fetch( process.env.REACT_APP_BACKEND + "filmes", {
         method: "POST",
         headers: {
             'Content-type': 'application/json'
@@ -44,12 +36,13 @@ function Enviar( evento ) {
     } )
     .then( (resposta) => resposta.json() )
         .then( (json) => { 
-            if( json.filme ) {
-                setEnviar( true );
+
+            if( json._id ) {
+                setCadastro( true );
                 setErro( false );
             } else {
                 setErro( true );
-                setEnviar( false );
+                setCadastro( false );
             }
 
         } )
@@ -57,16 +50,6 @@ function Enviar( evento ) {
 
 }
 
-    useEffect( () => {
-
-        setTitulo( "" );
-        setDescricao( "" );
-        setAno( "" );
-        setDuracao( "" );
-        setCategoria( "" );
-        setImagem( "" );
-
-    }, [ enviar ] );
     
   return (
     <Container component="section" maxWidth="xs">
@@ -82,8 +65,9 @@ function Enviar( evento ) {
         }}
         >
             <Typography component="h1" variant='h4'>Filmes</Typography>
-
-            <Box component="form" onSubmit={Enviar}>
+            { erro && (<Alert severity="warning">Filme já cadastrado. Tente novamente por favor!</Alert>)}
+            { cadastro && ( <Alert severity="success">Obrigado por cadastrar seu filme</Alert>)}
+            <Box component="form" onSubmit={Cadastrar}>
                 <TextField 
                 type="text" 
                 label="Titulo" 
@@ -120,13 +104,11 @@ function Enviar( evento ) {
                 value={duracao}
                 onChange={ (e) => setDuracao( e.target.value ) }
                 />
-                <Autocomplete 
-                disablePortal
-                id="combo-box-demo"
-                options={categoriasfilmes}
-                renderInput={(params) => <TextField {...params} label="Categoria" />}
-                margin="normal"
+                <TextField 
+                type="text" 
+                label="Categoria" 
                 variant="filled" 
+                margin="normal" 
                 fullWidth 
                 value={categoria}
                 onChange={ (e) => setCategoria( e.target.value ) }

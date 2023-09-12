@@ -1,4 +1,4 @@
-import { Avatar, Button, Container } from "@mui/material";
+import { Container } from "@mui/material";
 import { useEffect, useState } from "react";
 import Filme from "./components/Filme";
 
@@ -38,7 +38,7 @@ function App() {
             categoria={filme.categoria}
             ano={filme.ano}
             duracao={filme.duracao}
-            
+
           />
         ) )
       )}

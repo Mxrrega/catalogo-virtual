@@ -1,4 +1,4 @@
-import { Container } from "@mui/material";
+import { Button, Container } from "@mui/material";
 import { useEffect, useState } from "react";
 import Filme from "./components/Filme";
 
@@ -17,8 +17,29 @@ function App() {
         } )
         .then( (resposta) => resposta.json() )
         .then( (json) => { setFilmes( json ) } )
-        .catch( ( erro ) => { setErro( true ) } )
+        .catch( ( error ) => { setErro( true ) } )
   }, [])
+
+  function Excluir( evento, id ) {
+    evento.preventDefault()
+        fetch( process.env.REACT_APP_BACKEND + "filmes" , {
+            method: "DELETE",
+            headers: {
+                'content-Type': 'application/json'
+            },
+            body: JSON.stringify(
+                {
+                    id: id
+                }
+            )   
+        } )
+        .then( (resposta) => resposta.json() )
+        .then( (json) => { 
+            const novalista = filmes.filter( (filme)  => filme._id !== id );
+            setFilmes( novalista );
+  })
+        .catch( ( error ) => { setErro( true ) } )
+  }
   
   return (
     <>
@@ -38,10 +59,12 @@ function App() {
             categoria={filme.categoria}
             ano={filme.ano}
             duracao={filme.duracao}
-
+            excluir={ (e) => Excluir( e, filme._id ) }
+            id={filme._id}
           />
         ) )
       )}
+      
       </Container>
       
     </>

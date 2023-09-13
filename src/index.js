@@ -8,6 +8,9 @@ import Cadastro from './Cadastro';
 import { GlobalStyles } from '@mui/material';
 import Filmes from './Filmes';
 import EditaFilme from './EditaFilme';
+import Album from './Album';
+import LoginMUI from './LoginMUIi';
+import CadastroMUI from './CadastroMUI';
 
 const router = createBrowserRouter([
   {
@@ -29,6 +32,18 @@ const router = createBrowserRouter([
   {
     path: "/edicao/:id",
     element: <EditaFilme />
+  },
+  {
+    path: "/Album",
+    element: <Album />
+  },
+  {
+    path: "/loginmui",
+    element: <LoginMUI />
+  },
+  {
+    path: "/cadastromui",
+    element: <CadastroMUI />
   }
 ]);
 

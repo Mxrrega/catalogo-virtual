@@ -3,8 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
@@ -12,6 +10,8 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import IconeMike from './components/logo-mike.png';
+import { AppBar, Toolbar } from '@mui/material';
 
 function Copyright(props) {
   return (
@@ -26,11 +26,10 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
-export default function SignInSide() {
+function Cadastro() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -42,7 +41,22 @@ export default function SignInSide() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Grid container component="main" sx={{ height: '100vh' }}>
+      <AppBar position="relative" sx={{
+        height: '63px',
+        backgroundColor:'#A3A3A3',
+        margin:0
+      }}>
+        <Toolbar> 
+          <Box sx={{
+            width: '35%'
+          }}>
+            <Link href="/">
+            <img src={IconeMike} alt="logo" href="./" width={62} height={22}/>
+            </Link>
+          </Box>
+        </Toolbar>
+        </AppBar>
+      <Grid container component="main" sx={{ height: '100%' }}>
         <CssBaseline />
         <Grid
           item
@@ -148,3 +162,5 @@ export default function SignInSide() {
     </ThemeProvider>
   );
 }
+
+export default Cadastro;

@@ -6,7 +6,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Login from './Login';
 import Cadastro from './Cadastro';
 import { GlobalStyles } from '@mui/material';
-import Filmes from './Filmes';
+import CadastrarTênis from './CadastrarTênis';
 import EditaFilme from './EditaFilme';
 import Home from './Home';
 import LoginMUI from './LoginMUIi';
@@ -26,8 +26,8 @@ const router = createBrowserRouter([
     element: <Cadastro />
   },
   {
-    path: "/filmes",
-    element: <Filmes />
+    path: "/cadastrarTenis",
+    element: <CadastrarTênis />
   },
   {
     path: "/edicao/:id",

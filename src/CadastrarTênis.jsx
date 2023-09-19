@@ -1,9 +1,11 @@
-import { Alert, Box, Button, Container, TextField, Typography } from '@mui/material';
+import { Alert, AppBar, Box, Button, Container, TextField, ThemeProvider, Toolbar, Typography, createTheme,  CssBaseline } from '@mui/material';
 import React from 'react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import IconeMike from './components/logo-mike.png';
 
 
-function Filmes() {;
+function CadastroTenis() {;
 
     const [ titulo, setTitulo ] = useState( "" );
     const [ descricao, setDescricao ] = useState( "" );
@@ -13,6 +15,7 @@ function Filmes() {;
     const [ imagem, setImagem ] = useState( "" );
     const [ cadastro, setCadastro ] = useState( false );
     const [ erro, setErro ] = useState( false );
+    const defaultTheme = createTheme();
     
 function Cadastrar( evento ) {
 
@@ -48,14 +51,32 @@ function Cadastrar( evento ) {
         } )
         .catch( ( erro ) => { setErro( true ) } )
 
-}
+    }
+        
 
-    
   return (
+    <ThemeProvider theme={defaultTheme}>
+    <CssBaseline />
+      <AppBar position="relative" sx={{
+        height: '63px',
+        backgroundColor:'#A3A3A3',
+        margin:0
+      }}>
+        <Toolbar> 
+          <Box sx={{
+            width: '35%'
+          }}>
+            <Link to="/">
+            <img src={IconeMike} alt="logo" href="./" width={62} height={22}/>
+            </Link>
+          </Box>
+        </Toolbar>
+        </AppBar>
     <Container component="section" maxWidth="xs">
         <Box 
         sx={{ 
             mt: 10,
+            mb: 10,
             backgroundColor: "#C4C4C4",
             padding: "50px",
             borderRadius: "10px",
@@ -64,13 +85,13 @@ function Cadastrar( evento ) {
             alignItems: "center"
         }}
         >
-            <Typography component="h1" variant='h4'>Filmes</Typography>
+            <Typography component="h1" variant='h4'>Tênis</Typography>
             { erro && (<Alert severity="warning">Filme já cadastrado. Tente novamente por favor!</Alert>)}
             { cadastro && ( <Alert severity="success">Obrigado por cadastrar seu filme</Alert>)}
             <Box component="form" onSubmit={Cadastrar}>
                 <TextField 
                 type="text" 
-                label="Titulo" 
+                label="Nome" 
                 variant="filled" 
                 margin="normal" 
                 value={titulo}
@@ -88,7 +109,7 @@ function Cadastrar( evento ) {
                 />
                 <TextField 
                 type="number" 
-                label="Ano" 
+                label="Tamanho" 
                 variant="filled" 
                 margin="normal" 
                 fullWidth 
@@ -97,7 +118,7 @@ function Cadastrar( evento ) {
                 />
                 <TextField 
                 type="text" 
-                label="Duração" 
+                label="Garantia" 
                 variant="filled" 
                 margin="normal" 
                 fullWidth 
@@ -124,11 +145,13 @@ function Cadastrar( evento ) {
                 />
 
 
-                <Button type="submit" variant="contained" fullWidth sx={ { mt: 2, mb: 2 }} >Enviar</Button>
+                <Button type="submit" variant="contained" fullWidth sx={ { mt: 2, mb: 2 }} >Cadastrar</Button>
             </Box>
         </Box>
     </Container> 
+    </ThemeProvider>
   )
 }
 
-export default Filmes;
+
+export default CadastroTenis;

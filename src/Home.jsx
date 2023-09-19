@@ -14,9 +14,9 @@ import Banner from './components/imagem-tenis-home.png';
 
 function Copyright() {
   return (
-    <Typography variant="body2" color="text.secondary" align="center">
+    <Typography variant="body2" color="#fff" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://img.ifunny.co/images/abf21e3be5d1d5b2b5c8c96190ed15f1ff792cdbf71faa0a00277970c4f762ea_1.jpg">
+      <Link color="#fff" href="https://img.ifunny.co/images/abf21e3be5d1d5b2b5c8c96190ed15f1ff792cdbf71faa0a00277970c4f762ea_1.jpg">
         Mike Website
       </Link>{' '}
       {new Date().getFullYear()}
@@ -27,7 +27,7 @@ function Copyright() {
 
 const defaultTheme = createTheme();
 
-export default function Album() {
+function Home() {
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
@@ -104,22 +104,26 @@ export default function Album() {
               spacing={2}
               justifyContent="center"
             >
-              <Button variant="contained">Tênis cadastrados</Button>
-              <Button variant="outlined">Cadastrar tênis</Button>
+              <Button variant="contained" href="./app">Tênis cadastrados</Button>
+              <Button variant="outlined" href="/cadastrarTenis">Cadastrar tênis</Button>
             </Stack>
           </Container>
         </Box>
       </main>
-      {/* Footer */}
-      <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
+
+      <Box sx={{ bgcolor: '#111', 
+      p: 6,
+      color: '#fff'
+      }} 
+      component="footer">
         <Typography variant="h6" align="center" gutterBottom>
           Mike
         </Typography>
         <Typography
           variant="subtitle1"
           align="center"
-          color="text.secondary"
           component="p"
+          color="#fff"
         >
           Todos direitos de imagem direcionado à Nike
         </Typography>
@@ -128,3 +132,5 @@ export default function Album() {
     </ThemeProvider>
   );
 }
+
+export default Home;

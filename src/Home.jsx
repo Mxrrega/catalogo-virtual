@@ -9,8 +9,16 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import IconeMike from './components/logo-mike.png';
-import Banner from './components/imagem-tenis-home.png';
+import IconeMike from './components/imagens/logo-mike.png';
+import Profile from './components/imagens/PhotoCamera.png';
+import Banner from './components/imagens/imagem-tenis-home.png';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import Avatar from '@mui/material/Avatar';
+import Tooltip from '@mui/material/Tooltip';
+import MenuItem from '@mui/material/MenuItem';
+import { useState } from 'react';
+
 
 function Copyright() {
   return (
@@ -25,9 +33,25 @@ function Copyright() {
   );
 }
 
-const defaultTheme = createTheme();
-
 function Home() {
+
+  const defaultTheme = createTheme();
+  const usuario = localStorage.getItem('usuario');
+  const settings = ['Sair'];
+  const LimparLocal = (event) => {
+    localStorage.clear( 'usuario' );
+  };
+
+  const [anchorElUser, setAnchorElUser] = useState(null);
+
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
@@ -47,24 +71,68 @@ function Home() {
             width: '30%',
             textAlign:'center'
           }}>
-            <Typography variant="h6" color="black" noWrap>
+            <Typography component="h3" variant="h4" color="black" noWrap>
             Mike
           </Typography>
           </Box>
+          
 
-          <Box sx={{
-            width: '35%',
-            textAlign: 'right',
-            display:'inline-block'
-          }}>
-            <Link href="./cadastromui" underline="none" color={'black'}>
+          <Box
+            sx={{
+              width: '35%',
+              textAlign: 'right',
+              display: 'inline-block',
+            }}
+          >
+            {usuario ? (
+              <>
+              <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title="Abrir opções">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar alt="Foto Perfil" src={Profile}/>
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: '45px' }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {settings.map((setting) => (
+                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center" onClick={LimparLocal}>{setting}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+              </>
+            ) : (
+              <>
+              <Link href="./cadastromui" underline="none" color={'black'}>
                 {'Criar Conta |'}
-            </Link>
-            <Link href="./loginmui" underline="none" color={'black'} sx={{
-              margin: '6px'
-            }}>
+              </Link>
+              <Link
+                href="./loginmui"
+                underline="none"
+                color={'black'}
+                sx={{
+                  margin: '6px',
+                }}
+              >
                 {'Entrar'}
-            </Link>
+              </Link>
+            </>
+            )}
           </Box>
         </Toolbar>
       </AppBar>
@@ -81,7 +149,7 @@ function Home() {
             width: '90%',
             margin:'0 auto'
           }}>
-          <img src={Banner} width={'100%'}/>
+          <img src={Banner} alt="banner" width={'100%'}/>
           </Box>
           
           <Container maxWidth="sm">

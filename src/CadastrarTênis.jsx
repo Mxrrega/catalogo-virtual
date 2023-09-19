@@ -2,7 +2,7 @@ import { Alert, AppBar, Box, Button, Container, TextField, ThemeProvider, Toolba
 import React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import IconeMike from './components/logo-mike.png';
+import IconeMike from './components/imagens/logo-mike.png';
 
 
 function CadastroTenis() {;
@@ -86,8 +86,8 @@ function Cadastrar( evento ) {
         }}
         >
             <Typography component="h1" variant='h4'>Tênis</Typography>
-            { erro && (<Alert severity="warning">Filme já cadastrado. Tente novamente por favor!</Alert>)}
-            { cadastro && ( <Alert severity="success">Obrigado por cadastrar seu filme</Alert>)}
+            { erro && (<Alert severity="warning">Tênis já cadastrado. Tente novamente por favor!</Alert>)}
+            { cadastro && ( <Alert severity="success">Obrigado por cadastrar seu Tênis</Alert>)}
             <Box component="form" onSubmit={Cadastrar}>
                 <TextField 
                 type="text" 

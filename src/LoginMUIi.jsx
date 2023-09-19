@@ -12,8 +12,11 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import IconeMike from './components/logo-mike.png';
+import IconeMike from './components/imagens/logo-mike.png';
 import { AppBar, Toolbar } from '@mui/material';
+import { useState, useEffect } from 'react';
+import { useNavigate, json } from 'react-router-dom';
+import { Alert } from '@mui/material'
 
 function Copyright(props) {
   return (
@@ -31,15 +34,52 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-export default function SignInSide() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+function Login() {
+
+  const [ email, setEmail ] = useState( "" );
+  const [ senha, setSenha ] = useState( "" );
+  const [ lembrar, setLembrar ] = useState( false );
+  const [ login, setLogin ] = useState( false );
+  const [ erro, setErro ] = useState( false );
+  
+  const navigate = useNavigate(); 
+  useEffect( () => {
+
+      if( login ) {
+          localStorage.setItem( "usuario" , JSON.stringify( { email: email } ) );
+          setEmail( "" );
+          setSenha( "" );
+          navigate( "/" );
+      } 
+  }, [ login ] );
+
+  function Autenticar(evento)
+  {
+      evento.preventDefault() 
+      fetch( process.env.REACT_APP_BACKEND + "login" , {
+          method: "POST",
+          headers: {
+              'content-Type': 'application/json'
+          },
+          body: JSON.stringify(
+              {
+                  email: email,
+                  senha: senha
+              }
+          )   
+      } )
+      .then( (resposta) => resposta.json() )
+      .then( (json) => { 
+          if( json.user ) {
+              setLogin( true );
+          } else {
+              setErro( true );
+          }
+      } )
+      .catch( ( erro ) => { setErro( true ) } )
+      
+      
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -90,7 +130,8 @@ export default function SignInSide() {
             <Typography component="h1" variant="h5">
               Login
             </Typography>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+            { erro && ( <Alert severity="warning" sx={{ mt: 2, mb: 2 }}>Revise seus dados e tente novamente</Alert> ) }
+            <Box component="form" noValidate onSubmit={Autenticar} sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
                 required
@@ -100,6 +141,9 @@ export default function SignInSide() {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                value={email}
+                onChange={ (e) => setEmail( e.target.value ) }
+                {...erro && ( "error" ) }
               />
               <TextField
                 margin="normal"
@@ -110,9 +154,11 @@ export default function SignInSide() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={senha}
+                onChange={ (e) => setSenha( e.target.value ) }
               />
               <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
+                control={<Checkbox value={lembrar} color="primary" name="lembrar" onChange={(e) => setLembrar( !lembrar ) }/>}
                 label="Lembrar-me"
               />
               <Button
@@ -138,3 +184,5 @@ export default function SignInSide() {
     </ThemeProvider>
   );
 }
+
+export default Login;

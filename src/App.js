@@ -1,7 +1,8 @@
-import { AppBar, Box, Button, Container, CssBaseline, ThemeProvider, Toolbar } from "@mui/material";
+import { AppBar, Avatar, Box, Button, Container, CssBaseline, ThemeProvider, Toolbar } from "@mui/material";
 import { useEffect, useState } from "react";
 import Filme from "./components/Filme";
-import IconeMike from './components/logo-mike.png';
+import IconeMike from './components/imagens/logo-mike.png';
+import Profile from './components/imagens/PhotoCamera.png';
 import { createTheme } from '@mui/material/styles';
 import { Link } from "react-router-dom";
 import Card from '@mui/material/Card';
@@ -10,12 +11,16 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import Tenis1 from './components/imagens/tenis 1.png';
+import Tenis2 from './components/imagens/tenis 2.png';
+import Tenis3 from './components/imagens/tenis 3.png';
 
 
 function App() {
 
   const [ filmes, setFilmes ] = useState();
   const [ erro, setErro ] = useState();
+  const usuario = localStorage.getItem('usuario');
 
   useEffect( () => {
     fetch( process.env.REACT_APP_BACKEND + "filmes", {
@@ -51,7 +56,29 @@ function App() {
   }
   
   const defaultTheme = createTheme();
-  const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const cards = [
+    {
+    id: 1,
+    image: Tenis1,
+    title: "Tênis Nike Air Force 1 '07 Masculino",
+    description: "R$ 799,99",
+    editLink: "./edicao/1", 
+  },
+  {
+    id: 2,
+    image: Tenis2,
+    title: "Tênis Nike Renew Ride 3 Masculino",
+    description: "R$ 379,99",
+    editLink: "./edicao/1", 
+  },
+  {
+    id: 3,
+    image: Tenis3,
+    title: "Tênis Jordan MVP Masculino",
+    description: "R$ 1.299,99",
+    editLink: "./edicao/1", 
+  },
+    ];
 
   return (
     <>
@@ -64,49 +91,63 @@ function App() {
         <Toolbar>
           
           <Box sx={{
-            width: '35%'
+            width: '50%'
           }}>
             <Link to="/">
             <img src={IconeMike} alt="logo" href="./" width={62} height={22}/>
             </Link>
-          
+          </Box>
+          <Box sx={{
+            width: '50%',
+            textAlign: 'right',
+          }}>
+             {!usuario ? (
+              <>
+              </>
+            ) : (
+              <Avatar alt="Foto" src={Profile} sx={{display: 'inline-block'}}/>
+            )
+          } 
           </Box>
         </Toolbar>
         </AppBar>
-        <Container sx={{ py: 8 }} maxWidth="md">
-          {/* End hero unit */}
-          <Grid container spacing={4}>
-            {cards.map((card) => (
-              <Grid item key={card} xs={12} sm={6} md={4}>
-                <Card
-                  sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-                >
-                  <CardMedia
-                    component="div"
-                    sx={{
-                      // 16:9
-                      pt: '56.25%',
-                    }}
-                    image="https://source.unsplash.com/random?wallpapers"
-                  />
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      Heading
-                    </Typography>
-                    <Typography>
-                      This is a media card. You can use this section to describe the
-                      content.
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button size="small">View</Button>
-                    <Button size="small">Edit</Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
+        <Box>
+        <Container sx={{ py: 8,  }}>
+        <h1>Tênis:</h1>
+  <Grid container spacing={4} sx={{
+    width: '100%',
+    margin: '0 auto',
+    justifyContent: 'center'
+  }}>
+    {cards.map((card) => (
+      <Grid item key={card.id}  >
+        <Card
+          sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+        >
+          <CardMedia
+            component="div"
+          />
+          <img src={card.image} height="300px" width="300px" />
+          <CardContent sx={{ flexGrow: 1 }}>
+            <Typography gutterBottom variant="h8" component="h5">
+              {card.title}
+            </Typography>
+            <Typography>
+              {card.description}
+            </Typography>
+          </CardContent>
+          <CardActions>
+            {usuario ? (
+              <Button size="small" href={card.editLink}>Edit</Button>
+            ) : null}
+          </CardActions>
+        </Card>
+      </Grid>
+    ))}
+  </Grid>
+</Container>
+        </Box>
+        
     </ThemeProvider>
     
       <h1>Home</h1>

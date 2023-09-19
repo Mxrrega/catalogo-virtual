@@ -7,7 +7,7 @@ import Login from './Login';
 import Cadastro from './Cadastro';
 import { GlobalStyles } from '@mui/material';
 import CadastrarTênis from './CadastrarTênis';
-import EditaFilme from './EditaFilme';
+import EditaTenis from './EditaTenis';
 import Home from './Home';
 import LoginMUI from './LoginMUIi';
 import CadastroMUI from './CadastroMUI';
@@ -31,7 +31,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/edicao/:id",
-    element: <EditaFilme />
+    element: <EditaTenis />
   },
   {
     path: "/app",

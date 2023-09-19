@@ -10,8 +10,11 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import IconeMike from './components/logo-mike.png';
-import { AppBar, Toolbar } from '@mui/material';
+import IconeMike from './components/imagens/logo-mike.png';
+import { AppBar, Toolbar, Alert } from '@mui/material';
+import { useEffect, useState } from 'react';
+
+
 
 function Copyright(props) {
   return (
@@ -26,18 +29,63 @@ function Copyright(props) {
   );
 }
 
-
 const defaultTheme = createTheme();
 
 function Cadastro() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+
+  
+    const [ nome, setNome ] = useState( "" );
+    const [ email, setEmail ] = useState( "" );
+    const [ cpf, setCPF ] = useState( "" );
+    const [ telefone, setTelefone ] = useState( "" );
+    const [ senha, setSenha ] = useState( "" );
+    const [ cadastro, setCadastro ] = useState( false );
+    const [ erro, setErro ] = useState( false );
+
+    function Cadastrar( evento ) {
+
+      evento.preventDefault();
+  
+      fetch( process.env.REACT_APP_BACKEND + "users", {
+          method: "POST",
+          headers: {
+              'Content-type': 'application/json'
+          },
+          body: JSON.stringify (
+          {
+              nome: nome,
+              email: email,
+              cpf: cpf,
+              telefone: telefone,
+              senha: senha
+          }
+      )   
+      } )
+      .then( (resposta) => resposta.json() )
+          .then( (json) => { 
+              if( json.cpf ) {
+                  setCadastro( true );
+                  setErro( false );
+              } else {
+                  setErro( true );
+                  setCadastro( false );
+              }
+  
+          } )
+          .catch( ( erro ) => { setErro( true ) } )
+  
+  }
+  
+      useEffect( () => {
+  
+          
+          setNome( "" );
+          setEmail( "" );
+          setCPF( "" );
+          setTelefone( "" );
+          setSenha( "" );
+  
+      }, [ cadastro ] );
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -56,7 +104,7 @@ function Cadastro() {
           </Box>
         </Toolbar>
         </AppBar>
-      <Grid container component="main" sx={{ height: '100%' }}>
+      <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
         <Grid
           item
@@ -86,9 +134,11 @@ function Cadastro() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Cadastro
+              Cadastrar
             </Typography>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+            { erro && ( <Alert severity="warning" sx={{ mt: 2, mb: 2 }}>Desculpe tente novamente</Alert> ) }
+            { cadastro && ( <Alert severity="success" sx={{ mt: 2, mb: 2 }}>Obrigado por se Cadastar</Alert> ) }
+            <Box component="form" noValidate onSubmit={Cadastrar} sx={{ mt: 1 }}>
               <TextField
                margin="normal"
                required
@@ -98,6 +148,8 @@ function Cadastro() {
                name="nome"
                autoComplete="nome"
                autoFocus
+               value={nome}
+               onChange={ (e) => setNome( e.target.value ) }
                />
               <TextField
                 margin="normal"
@@ -108,6 +160,8 @@ function Cadastro() {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                value={email}
+                onChange={ (e) => setEmail( e.target.value ) }
               />
               <TextField
                 margin="normal"
@@ -118,6 +172,8 @@ function Cadastro() {
                 name="cpf"
                 autoComplete="cpf"
                 autoFocus
+                value={cpf}
+                onChange={ (e) => setCPF( e.target.value ) }
               />
               <TextField
                 margin="normal"
@@ -128,6 +184,8 @@ function Cadastro() {
                 name="telefone"
                 autoComplete="telefone"
                 autoFocus
+                value={telefone}
+               onChange={ (e) => setTelefone( e.target.value ) }
               />
               <TextField
                 margin="normal"
@@ -138,6 +196,8 @@ function Cadastro() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={senha}
+               onChange={ (e) => setSenha( e.target.value ) }
               />
               <Button
                 type="submit"

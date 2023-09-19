@@ -1,7 +1,9 @@
-import { Alert, Box, Button, Container, TextField, Typography} from '@mui/material';
+import { Alert, Box, Button, Container, TextField, ThemeProvider, Toolbar, Typography, createTheme,  CssBaseline, AppBar} from '@mui/material';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import IconeMike from './components/imagens/logo-mike.png';
 
 function EditaFilme() {
 
@@ -15,6 +17,7 @@ function EditaFilme() {
     const [ imagem, setImagem ] = useState( "" );
     const [ editar, setEditar ] = useState( false );
     const [ erro, setErro ] = useState( false );
+    const defaultTheme = createTheme();
 
     useEffect( () => {
         fetch( process.env.REACT_APP_BACKEND + "filmes/" + id, {
@@ -75,6 +78,23 @@ function EditaFilme() {
     }
 
   return (
+    <ThemeProvider theme={defaultTheme}>
+    <CssBaseline />
+      <AppBar position="relative" sx={{
+        height: '63px',
+        backgroundColor:'#A3A3A3',
+        margin:0
+      }}>
+        <Toolbar> 
+          <Box sx={{
+            width: '35%'
+          }}>
+            <Link to="/">
+            <img src={IconeMike} alt="logo" href="./" width={62} height={22}/>
+            </Link>
+          </Box>
+        </Toolbar>
+        </AppBar>
     <Container component="section" maxWidth="xs">
         <Box
         sx={{ 
@@ -87,7 +107,7 @@ function EditaFilme() {
             alignItems: "center"
         }}
         >
-            <Typography component="h1" variant='h4'>Filmes</Typography>
+            <Typography component="h1" variant='h4'>Tênis</Typography>
             { erro && (<Alert severity="warning">{erro}</Alert>)}
             { editar && ( <Alert severity="success">Filme editado com sucesso</Alert>)}
         <Box component="form" onSubmit={Editar}>
@@ -151,6 +171,7 @@ function EditaFilme() {
         </Box>
         </Box>
     </Container>
+    </ThemeProvider>
   )
 }
 

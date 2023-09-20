@@ -1,6 +1,5 @@
 import { AppBar, Avatar, Box, Button, Container, CssBaseline, ThemeProvider, Toolbar } from "@mui/material";
 import { useEffect, useState } from "react";
-import Filme from "./components/Filme";
 import IconeMike from './components/imagens/logo-mike.png';
 import Profile from './components/imagens/PhotoCamera.png';
 import { createTheme } from '@mui/material/styles';
@@ -11,74 +10,52 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import Tenis1 from './components/imagens/tenis 1.png';
-import Tenis2 from './components/imagens/tenis 2.png';
-import Tenis3 from './components/imagens/tenis 3.png';
 
 
 function App() {
 
-  const [ filmes, setFilmes ] = useState();
+  const [ produtos, setProdutos ] = useState();
   const [ erro, setErro ] = useState();
-  const usuario = localStorage.getItem('usuario');
+  const usuarioConta = localStorage.getItem('usuario');
 
   useEffect( () => {
-    fetch( process.env.REACT_APP_BACKEND + "filmes", {
+
+    const usuario = localStorage.getItem( "usuario" )
+
+    fetch( process.env.REACT_APP_BACKEND + "produtos/" + usuario, {
             method: "GET",
             headers: {
                 'content-Type': 'application/json'
             } 
         } )
         .then( (resposta) => resposta.json() )
-        .then( (json) => { setFilmes( json ) } )
+        .then( (json) => { setProdutos( json ) } )
         .catch( ( error ) => { setErro( true ) } )
   }, [])
 
   function Excluir( evento, id ) {
     evento.preventDefault()
-        fetch( process.env.REACT_APP_BACKEND + "filmes" , {
+        fetch( process.env.REACT_APP_BACKEND + "produtos" , {
             method: "DELETE",
             headers: {
                 'content-Type': 'application/json'
             },
             body: JSON.stringify(
                 {
-                    id: id
+                    id: id,
+                    usuario: localStorage.getItem( "usuario" )
                 }
             )   
         } )
         .then( (resposta) => resposta.json() )
         .then( (json) => { 
-            const novalista = filmes.filter( (filme)  => filme._id !== id );
-            setFilmes( novalista );
+            const novalista = produtos.filter( (produtos)  => produtos._id !== id );
+            setProdutos( novalista );
   })
         .catch( ( error ) => { setErro( true ) } )
   }
   
   const defaultTheme = createTheme();
-  const cards = [
-    {
-    id: 1,
-    image: Tenis1,
-    title: "Tênis Nike Air Force 1 '07 Masculino",
-    description: "R$ 799,99",
-    editLink: "./edicao/1", 
-  },
-  {
-    id: 2,
-    image: Tenis2,
-    title: "Tênis Nike Renew Ride 3 Masculino",
-    description: "R$ 379,99",
-    editLink: "./edicao/1", 
-  },
-  {
-    id: 3,
-    image: Tenis3,
-    title: "Tênis Jordan MVP Masculino",
-    description: "R$ 1.299,99",
-    editLink: "./edicao/1", 
-  },
-    ];
 
   return (
     <>
@@ -101,7 +78,7 @@ function App() {
             width: '50%',
             textAlign: 'right',
           }}>
-             {!usuario ? (
+             {!usuarioConta ? (
               <>
               </>
             ) : (
@@ -112,68 +89,58 @@ function App() {
         </Toolbar>
         </AppBar>
         <Box>
-        <Container sx={{ py: 8,  }}>
+        <Container sx={{ py: 8, boxSizing:'border-box' }}>
         <h1>Tênis Cadastrados:</h1>
-  <Grid container spacing={4} sx={{
+  <Grid container spacing={2} sx={{
     width: '100%',
     margin: '0 auto',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    
   }}>
-    {cards.map((card) => (
-      <Grid item key={card.id}  >
+    {produtos && (
+        produtos.map( (produtos, index) => (
+      <Grid item key={produtos._id}  sx={{
+        
+      }}>
         <Card
-          sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+          sx={{ height: '100%', display: 'flex', flexDirection: 'column'  }}
         >
           <CardMedia
             component="div"
           />
-          <img src={card.image} height="300px" width="300px" />
+          <Box sx={ {margin: '0 auto' }}>
+          <img src={produtos.imagem} height="360px" width="360px" />
+          </Box>
           <CardContent sx={{ flexGrow: 1 }}>
-            <Typography gutterBottom variant="h8" component="h5">
-              {card.title}
+            <Typography gutterBottom component="p" sx={{ fontSize: '16px' }}>
+              {produtos.titulo}
             </Typography>
-            <Typography>
-              {card.description}
+            <Typography sx={{color: "#737373"}}>
+            {produtos.categoria}
+            </Typography>
+            <Typography sx={{mt:1, fontSize: '16px'}}>
+              {produtos.descricao}
             </Typography>
           </CardContent>
           <CardActions>
-            {usuario ? (
-              <Button size="small" href={card.editLink}>Edit</Button>
+            {usuarioConta ? (
+              <Button size="small" href={"/edicao/" + produtos._id}>Editar</Button>
             ) : null}
+            <Grid item xs={6}>
+            <Button onClick={ (e) => Excluir( e, produtos._id ) }>Excluir</Button>
+            </Grid>
           </CardActions>
         </Card>
       </Grid>
-    ))}
+    ) )
+    )}
   </Grid>
 </Container>
         </Box>
         
     </ThemeProvider>
     
-      <h1>Home</h1>
-      <Container sx={{
-        display: "flex",
-        flexFlow: "row",
-        flexWrap: "wrap",
-        gap: "2rem"
-      }}>
-        {filmes && (
-        filmes.map( (filme, index) => (
-          <Filme 
-            imagem={filme.imagem} 
-            titulo={filme.titulo}
-            descricao={filme.descricao}
-            categoria={filme.categoria}
-            ano={filme.ano}
-            duracao={filme.duracao}
-            excluir={ (e) => Excluir( e, filme._id ) }
-            id={filme._id}
-          />
-        ) )
-      )}
-      
-      
-      </Container>
+     
       
     </>
   );

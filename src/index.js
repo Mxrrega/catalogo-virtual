@@ -3,27 +3,17 @@ import ReactDOM from 'react-dom/client';
 import App from "./App";
 import {createTheme, ThemeProvider } from '@mui/material/styles';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Login from './Login';
-import Cadastro from './Cadastro';
 import { GlobalStyles } from '@mui/material';
 import CadastrarTênis from './CadastrarTênis';
 import EditaTenis from './EditaTenis';
 import Home from './Home';
-import LoginMUI from './LoginMUIi';
-import CadastroMUI from './CadastroMUI';
+import Login from './Login';
+import Cadastro from './Cadastro';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />
-  },
-  {
-    path: "/login",
-    element: <Login />
-  },
-  {
-    path: "/cadastro",
-    element: <Cadastro />
   },
   {
     path: "/cadastrarTenis",
@@ -38,12 +28,12 @@ const router = createBrowserRouter([
     element: <App />
   },
   {
-    path: "/loginmui",
-    element: <LoginMUI />
+    path: "/login",
+    element: <Login />
   },
   {
-    path: "/cadastromui",
-    element: <CadastroMUI />
+    path: "/cadastro",
+    element: <Cadastro />
   }
 ]);
 

@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import IconeMike from './components/imagens/logo-mike.png';
 
-function EditaFilme() {
+function EditaTenis() {
 
     const { id } = useParams();
 
@@ -20,7 +20,8 @@ function EditaFilme() {
     const defaultTheme = createTheme();
 
     useEffect( () => {
-        fetch( process.env.REACT_APP_BACKEND + "filmes/" + id, {
+        const usuario = localStorage.getItem( "usuario" );
+        fetch( process.env.REACT_APP_BACKEND + "produtos/" + usuario + "/" + id, {
             method: "GET",
             headers: {
                 'Content-type': 'application/json'
@@ -36,7 +37,7 @@ function EditaFilme() {
             setCategoria( json.categoria );
             setImagem( json.imagem );
             }else {
-                setErro( "Filme não encontrado" );
+                setErro( "Tênis não encontrado" );
             }
             } )
             .catch( ( erro ) => { setErro( true ) } )
@@ -45,7 +46,7 @@ function EditaFilme() {
     function Editar( evento ) {
         evento.preventDefault();
 
-        fetch( process.env.REACT_APP_BACKEND + "filmes", {
+        fetch( process.env.REACT_APP_BACKEND + "produtos", {
             method: "PUT",
             headers: {
                 'Content-type': 'application/json'
@@ -58,7 +59,8 @@ function EditaFilme() {
                 ano: ano,
                 duracao: duracao,
                 categoria: categoria,
-                imagem: imagem
+                imagem: imagem,
+                usuario: localStorage.getItem( "usuario" )
             }
         )   
         } )
@@ -110,11 +112,11 @@ function EditaFilme() {
         >
             <Typography component="h1" variant='h4'>Tênis</Typography>
             { erro && (<Alert severity="warning">{erro}</Alert>)}
-            { editar && ( <Alert severity="success">Filme editado com sucesso</Alert>)}
+            { editar && ( <Alert severity="success">Tênis editado com sucesso</Alert>)}
         <Box component="form" onSubmit={Editar}>
         <TextField 
         type="text" 
-        label="Titulo" 
+        label="Nome" 
         variant="filled" 
         margin="normal" 
         value={titulo}
@@ -123,7 +125,7 @@ function EditaFilme() {
         />
         <TextField 
        type="text" 
-        label="Descrição" 
+        label="Preço" 
         variant="filled" 
         margin="normal" 
         fullWidth 
@@ -132,21 +134,12 @@ function EditaFilme() {
         />
         <TextField 
         type="number" 
-        label="Ano" 
+        label="Tamanho" 
         variant="filled" 
         margin="normal" 
         fullWidth 
         value={ano}
         onChange={ (e) => setAno( e.target.value ) }
-        />
-        <TextField 
-        type="text" 
-        label="Duração" 
-        variant="filled" 
-        margin="normal" 
-        fullWidth 
-        value={duracao}
-        onChange={ (e) => setDuracao( e.target.value ) }
         />
         <TextField 
         type="text" 
@@ -176,4 +169,4 @@ function EditaFilme() {
   )
 }
 
-export default EditaFilme;
+export default EditaTenis;

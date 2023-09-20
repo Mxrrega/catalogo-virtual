@@ -21,7 +21,7 @@ function Cadastrar( evento ) {
 
     evento.preventDefault();
 
-    fetch( process.env.REACT_APP_BACKEND + "filmes", {
+    fetch( process.env.REACT_APP_BACKEND + "produtos", {
         method: "POST",
         headers: {
             'Content-type': 'application/json'
@@ -33,7 +33,8 @@ function Cadastrar( evento ) {
             ano: ano,
             duracao: duracao,
             categoria: categoria,
-            imagem: imagem
+            imagem: imagem,
+            usuario: localStorage.getItem( "usuario")
         }
     )   
     } )
@@ -85,7 +86,7 @@ function Cadastrar( evento ) {
             alignItems: "center"
         }}
         >
-            <Typography component="h1" variant='h4'>Tênis</Typography>
+            <Typography component="h1" variant='h4'>Cadastrar Tênis</Typography>
             { erro && (<Alert severity="warning">Tênis já cadastrado. Tente novamente por favor!</Alert>)}
             { cadastro && ( <Alert severity="success">Obrigado por cadastrar seu Tênis</Alert>)}
             <Box component="form" onSubmit={Cadastrar}>
@@ -115,15 +116,6 @@ function Cadastrar( evento ) {
                 fullWidth 
                 value={ano}
                 onChange={ (e) => setAno( e.target.value ) }
-                />
-                <TextField 
-                type="text" 
-                label="Garantia" 
-                variant="filled" 
-                margin="normal" 
-                fullWidth 
-                value={duracao}
-                onChange={ (e) => setDuracao( e.target.value ) }
                 />
                 <TextField 
                 type="text" 

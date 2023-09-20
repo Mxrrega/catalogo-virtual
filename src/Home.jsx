@@ -116,11 +116,11 @@ function Home() {
               </>
             ) : (
               <>
-              <Link href="./cadastromui" underline="none" color={'black'}>
+              <Link href="./cadastro" underline="none" color={'black'}>
                 {'Criar Conta |'}
               </Link>
               <Link
-                href="./loginmui"
+                href="./login"
                 underline="none"
                 color={'black'}
                 sx={{

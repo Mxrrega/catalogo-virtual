@@ -75,8 +75,6 @@ function Home() {
             Mike
           </Typography>
           </Box>
-          
-
           <Box
             sx={{
               width: '35%',

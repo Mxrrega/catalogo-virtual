@@ -113,7 +113,7 @@ function App() {
         </AppBar>
         <Box>
         <Container sx={{ py: 8,  }}>
-        <h1>Tênis:</h1>
+        <h1>Tênis Cadastrados:</h1>
   <Grid container spacing={4} sx={{
     width: '100%',
     margin: '0 auto',

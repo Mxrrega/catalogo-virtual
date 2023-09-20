@@ -83,6 +83,7 @@ function Login() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
+      <CssBaseline />
       <AppBar position="relative" sx={{
         height: '63px',
         backgroundColor:'#A3A3A3',
@@ -99,7 +100,7 @@ function Login() {
         </Toolbar>
         </AppBar>
       <Grid container component="main" sx={{ height: '100vh' }}>
-        <CssBaseline />
+        
         <Grid
           item
           xs={false}

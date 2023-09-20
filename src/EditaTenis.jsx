@@ -99,6 +99,7 @@ function EditaFilme() {
         <Box
         sx={{ 
             mt: 10,
+            mb: 10,
             backgroundColor: "#C4C4C4",
             padding: "50px",
             borderRadius: "10px",

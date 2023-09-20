@@ -100,7 +100,7 @@ function Cadastrar( evento ) {
                 />
                 <TextField 
                 type="text" 
-                label="Descrição" 
+                label="Preço" 
                 variant="filled" 
                 margin="normal" 
                 fullWidth 

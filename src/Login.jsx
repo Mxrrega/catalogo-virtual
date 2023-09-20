@@ -173,7 +173,7 @@ function Login() {
               </Button>
               <Grid container>
                 <Grid item>
-                  <Link href="./cadastromui" variant="body2">
+                  <Link href="./cadastro" variant="body2">
                     {"Não tem uma conta? Cadastre-se"}
                   </Link>
                 </Grid>

@@ -209,7 +209,7 @@ function Cadastro() {
               </Button>
               <Grid container>
                 <Grid item>
-                  <Link href="./loginmui" variant="body2">
+                  <Link href="./login" variant="body2">
                     {"Já tem uma conta? Clique aqui para entrar"}
                   </Link>
                 </Grid>
